@@ -1,0 +1,82 @@
+[
+  {
+    "id": 1,
+    "name": "Official NFL Game Ball",
+    "category": "Footballs",
+    "price": 99.99,
+    "variant": "Duke",
+    "size": "Regulation"
+  },
+  {
+    "id": 2,
+    "name": "Replica NFL Jersey",
+    "category": "Apparel",
+    "price": 59.99,
+    "variant": "Raiders Home - #98",
+    "size": "Medium"
+  },
+  {
+    "id": 3,
+    "name": "Football Helmet",
+    "category": "Equipment",
+    "price": 129.99,
+    "variant": "Bucket - 1 Bar Facemask",
+    "size": "Large"
+  },
+  {
+    "id": 4,
+    "name": "Shoulder Pads",
+    "category": "Equipment",
+    "price": 79.99,
+    "variant": "Adult - Skill",
+    "size": "Medium"
+  },
+  {
+    "id": 5,
+    "name": "Cleats",
+    "category": "Footwear",
+    "price": 54.99,
+    "variant": "Freak 2024",
+    "size": "10M"
+  },
+  {
+    "id": 6,
+    "name": "Mouthguard",
+    "category": "Protective Gear",
+    "price": 9.99,
+    "variant": "Adult - Blue",
+    "size": "One Size Fits All"
+  },
+  {
+    "id": 7,
+    "name": "Tailgating Chair",
+    "category": "Fan Gear",
+    "price": 29.99,
+    "variant": "Folding",
+    "size": "Standard"
+  },
+  {
+    "id": 8,
+    "name": "Team Pennant",
+    "category": "Fan Gear",
+    "price": 14.99,
+    "variant": "Raiders - Large",
+    "size": "3' x 5'"
+  },
+  {
+    "id": 9,
+    "name": "Foam Finger",
+    "category": "Fan Gear",
+    "price": 5.99,
+    "variant": "Raiders - Silver",
+    "size": "One Size Fits All"
+  },
+  {
+    "id": 10,
+    "name": "Football Snack Helmet",
+    "category": "Novelty Items",
+    "price": 19.99,
+    "variant": "Raiders - Mini",
+    "size": "One Size Fits All"
+  }
+]
