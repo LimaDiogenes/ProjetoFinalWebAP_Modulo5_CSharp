@@ -1,4 +1,5 @@
 
+using MockDB;
 
 namespace FinalProj
 {
@@ -9,7 +10,7 @@ namespace FinalProj
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
+            MockDB.Items.Init();
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();

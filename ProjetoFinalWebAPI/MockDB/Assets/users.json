@@ -1,0 +1,63 @@
+[
+  {
+    "Id": 1,
+    "Name": "admin",
+    "Email": "admin@admin.com",
+    "Admin": true
+  },
+  {
+    "Id": 2,
+    "Name": "Sam Winchester",
+    "Email": "sam@winchester.com",
+    "Admin": false
+  },
+  {
+    "Id": 3,
+    "Name": "Dean Winchester",
+    "Email": "dean@winchester.com",
+    "Admin": false
+  },
+  {
+    "Id": 4,
+    "Name": "Castiel Novak",
+    "Email": "castiel@novak.com",
+    "Admin": false
+  },
+  {
+    "Id": 5,
+    "Name": "Crowley King of Hell",
+    "Email": "crowley@hell.com",
+    "Admin": false
+  },
+  {
+    "Id": 6,
+    "Name": "Charlie Bradbury",
+    "Email": "charlie@bradbury.com",
+    "Admin": false
+  },
+  {
+    "Id": 7,
+    "Name": "Bobby Singer",
+    "Email": "bobby@singer.com",
+    "Admin": false
+  },
+  {
+    "Id": 8,
+    "Name": "Rowena MacLeod",
+    "Email": "rowena@macleod.com",
+    "Admin": false
+  },
+  {
+    "Id": 9,
+    "Name": "Gabriel Trickster",
+    "Email": "gabriel@trickster.com",
+    "Admin": false
+  },
+  {
+    "Id": 10,
+    "Name": "Mary Winchester",
+    "Email": "mary@winchester.com",
+    "Admin": false
+  }
+]
+

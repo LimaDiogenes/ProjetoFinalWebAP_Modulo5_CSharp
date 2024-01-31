@@ -4,12 +4,12 @@ namespace MockDB
 {
     public class Users
     {
-        public static List<IEntity> UsersList = new List<IEntity>();
-        public static string JsonPath = $"{Directory.GetCurrentDirectory()}/users.json";
+        public static List<User> UsersList = new List<User>();
+        public static string JsonPath = $"{Directory.GetCurrentDirectory()}\\MockDB\\Assets\\users.json";
 
         static Users()
         {
-            JsonIO.ReadJson(JsonPath);
+            UsersList = JsonIO.ReadJson<User>(JsonPath);
         }
 
         public static void InsertUser(User user)
@@ -29,7 +29,7 @@ namespace MockDB
             return false;
         }
 
-        public static List<IEntity> GetUsers()
+        public static List<User> GetUsers()
         {
             return UsersList;
         }

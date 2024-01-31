@@ -8,12 +8,17 @@ namespace MockDB
 {
     internal static class Items
     {
-        public static List<IEntity> ItemsList = new List<IEntity>();
-        public static string JsonPath = $"{Directory.GetCurrentDirectory()}/items.json";
+        public static List<Item> ItemsList = new List<Item>();
+        public static string JsonPath = $"{Directory.GetCurrentDirectory()}\\MockDB\\Assets\\items.json";
 
         static Items()
-        {            
-            JsonIO.ReadJson(JsonPath);
+        {
+            ;
+        }
+
+        public static void Init()
+        {
+            ItemsList = JsonIO.ReadJson<Item>(JsonPath);
         }
 
         public static void InsertItem(Item item)
@@ -32,7 +37,7 @@ namespace MockDB
             return false;
         }
 
-        public static List<IEntity> GetItems()
+        public static List<Item> GetItems()
         {
             return ItemsList;
         }
