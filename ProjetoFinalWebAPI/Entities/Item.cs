@@ -1,7 +1,7 @@
 ﻿
-using FinalProj.Services;
+using Services;
 
-namespace FinalProj.Entities
+namespace Entities
 {
     public class Item : IEntity
     {

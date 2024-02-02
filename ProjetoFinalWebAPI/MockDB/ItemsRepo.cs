@@ -1,17 +1,19 @@
 ﻿
-using FinalProj.Entities;
+using System;
+using Entities;
 using Microsoft.Extensions.Hosting.Internal;
 using System.IO;
 using System.Text.Json;
+using System.Collections.Generic;
 
 namespace MockDB
 {
-    internal static class Items
+    internal static class ItemsRepo
     {
         public static List<Item> ItemsList = new List<Item>();
         public static string JsonPath = $"{Directory.GetCurrentDirectory()}\\MockDB\\Assets\\items.json";
 
-        static Items()
+        static ItemsRepo()
         {
             ;
         }

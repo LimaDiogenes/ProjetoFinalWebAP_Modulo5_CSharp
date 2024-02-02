@@ -1,20 +1,22 @@
-﻿using FinalProj.Services;
+﻿using Services;
 
-namespace FinalProj.Entities
+namespace Entities
 {
     public class User : IEntity
     {
-        public int Id { get; private set; }
-        public string Name { get; private set; }
-        public string Email { get; private set; }
-        public bool Admin { get; private set; } 
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public bool Admin { get; set; } 
+        public string Password { get; set; }
 
-        public User(string name, string email, bool admin, int id = 0)
+        public User(string name, string email, bool admin, string password, int id = 0)
         {
-            Id = (id == 0) ? IdGenerator.ItemId() : id;
+            Id = (id == 0) ? IdGenerator.UserId() : id;
             Name = name;
             Email = email;
             Admin = admin;
+            Password = password;
         }
     }
 }
