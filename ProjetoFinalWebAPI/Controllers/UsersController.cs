@@ -6,6 +6,9 @@ using Services;
 using Microsoft.AspNetCore.Authorization;
 using Requests;
 using Validators;
+using System;
+using System.Security.Claims;
+using Exceptions;
 
 namespace Controllers
 {
@@ -29,7 +32,7 @@ namespace Controllers
 
     [Route("GridironStore/Users")]
     [ApiController]
-    //[Authorize]
+    
     public class UsersController : ControllerBase
     {
         private readonly IUserService userService;
@@ -39,7 +42,7 @@ namespace Controllers
             userService = service;
         }
 
-               
+        [Authorize(Roles = "Admin")]
         [HttpGet("ListAllUsers")]        
         public IActionResult List()
         {
@@ -48,8 +51,14 @@ namespace Controllers
 
         
         [HttpGet("Profile/{id}")]
+        [Authorize]
         public IActionResult Get(int id)
         {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+            var isAdmin = User.FindFirst(ClaimTypes.Role)!.Value.ToString();
+            if (int.Parse(userId) != id && isAdmin != "Admin")
+            { throw new UnathorizedException("Only Admin users can access other users"); }
+
             var user = userService.GetUserById(id);
             return user is null ? NotFound() : Ok(user);
         }
@@ -62,6 +71,7 @@ namespace Controllers
             return Ok(newUser);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("Profile/Update/{id}")]
         public IActionResult Put(int id, [FromBody] ToUserResponse user)
         {
@@ -70,6 +80,7 @@ namespace Controllers
             return Ok(updatedUser);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("Profile/Delete/{id}")]
         public IActionResult Delete(int id)
         {            

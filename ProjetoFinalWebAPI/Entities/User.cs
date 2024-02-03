@@ -9,6 +9,7 @@ namespace Entities
         public string Email { get; set; }
         public bool Admin { get; set; } 
         public string Password { get; set; }
+        public string Role { get; set; }
 
         public User(string name, string email, bool admin, string password, int id = 0)
         {
@@ -17,6 +18,7 @@ namespace Entities
             Email = email;
             Admin = admin;
             Password = password;
+            Role = admin ? "Admin" : "NormalUser";
         }
     }
 }

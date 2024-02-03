@@ -86,14 +86,13 @@ public class JwtService : IJwtService
     }
 
     private ClaimsIdentity CreateClaimsIdentity(User user, Guid tokenId)
-    {
-        var role = user.Admin ? "Admin" : "Normal user";
+    {        
         var userDataClaims = new Claim[] {
             new Claim(ClaimTypes.Sid, tokenId.ToString()),
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim(ClaimTypes.Email, user.Email!),
             new Claim(ClaimTypes.Name, user.Name!),
-            new Claim(ClaimTypes.Role, role),
+            new Claim(ClaimTypes.Role, user.Role),            
         };
         return new ClaimsIdentity(userDataClaims);
     }

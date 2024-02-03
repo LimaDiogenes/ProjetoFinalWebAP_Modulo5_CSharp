@@ -14,3 +14,4 @@ Listagem e obter dados do produto não necessita de autenticação
 
 Endpoint de compra
 precisa estar autenticado
+
