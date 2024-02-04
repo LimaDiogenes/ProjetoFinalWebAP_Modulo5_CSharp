@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Controllers
 {
-    [Route("api/[controller]")]
+    [Route("GridironStore/Items")]
     [ApiController]
     public class ItemsController : ControllerBase
     {

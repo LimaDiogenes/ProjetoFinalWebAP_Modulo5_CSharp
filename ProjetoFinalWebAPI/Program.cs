@@ -77,15 +77,6 @@ namespace FinalProj
                     .RequireAuthenticatedUser().Build());
             });
 
-            builder.Services.AddAuthorization(options =>
-            {
-                options.AddPolicy("SameUser", new AuthorizationPolicyBuilder()
-                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
-                    .RequireAuthenticatedUser()
-                    .Build());
-            });
-
-
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();

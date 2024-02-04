@@ -54,13 +54,14 @@ namespace Controllers
         [Authorize]
         public IActionResult Get(int id)
         {
+            // preciso alterar esta parte abaixo para tirar a logica daqui:
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
             var isAdmin = User.FindFirst(ClaimTypes.Role)!.Value.ToString();
             if (int.Parse(userId) != id && isAdmin != "Admin")
             { throw new UnathorizedException("Only Admin users can access other users"); }
 
             var user = userService.GetUserById(id);
-            return user is null ? NotFound() : Ok(user);
+            return Ok(user);
         }
 
         [HttpPost("Profile/Register")]
