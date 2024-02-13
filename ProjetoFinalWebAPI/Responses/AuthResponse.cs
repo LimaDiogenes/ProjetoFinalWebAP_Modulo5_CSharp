@@ -10,5 +10,5 @@ public class JwtResponse
 
 public class AuthResponse
 {
-    public JwtResponse Token { get; set; }
+    public JwtResponse? Token { get; set; }
 }

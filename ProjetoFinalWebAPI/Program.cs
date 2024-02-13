@@ -21,7 +21,7 @@ namespace FinalProj
     {
         public static void Main(string[] args)
         {
-            MockDB.ItemsRepo.Init(); // inicializa classe "simulando banco de dados"
+            
 
             var builder = WebApplication.CreateBuilder(args);
 
@@ -83,6 +83,7 @@ namespace FinalProj
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddSingleton<IUserRepo, UsersRepo>();
+            builder.Services.AddSingleton<IItemRepo, ItemsRepo>();
             builder.Services.AddSingleton<PasswordHashOptions>();
             builder.Services.AddSingleton<IHashingService, HashingService>();
             builder.Services.AddSingleton<IJwtService, JwtService>();
