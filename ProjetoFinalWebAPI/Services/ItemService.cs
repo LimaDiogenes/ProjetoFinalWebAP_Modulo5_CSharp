@@ -1,10 +1,10 @@
 ﻿using Exceptions;
-using Requests;
-using Validators;
-using MockDB;
 using Mappers;
+using MockDB;
+using Requests;
 using System.Collections.Generic;
 using System.Linq;
+using Validators;
 
 namespace Services
 {
@@ -34,19 +34,25 @@ namespace Services
         public ItemResponse CreateItem(BaseItemRequest newItem)
         {
             var errors = _validator.Validate(newItem);
-
             if (errors.Any())
                 throw new BadRequestException(errors);
 
-            var item = ItemMapper.ToEntity(newItem);
-            var mappedItem = _repo.CreateItem(item);
-            return ItemMapper.ToResponse(mappedItem);
+            return _repo.CreateItem(newItem);
+
+            //var errors = _validator.Validate(newItem);
+
+            //if (errors.Any())
+            //    throw new BadRequestException(errors);
+
+            //var item = ItemMapper.ToEntity(newItem);
+            //var mappedItem = _repo.CreateItem(item);
+            //return ItemMapper.ToResponse(mappedItem);
         }
 
         public bool DeleteItem(int id)
         {
-            var item = GetItemById(id);
-            return _repo.DeleteItem(item!);
+            var item = ItemMapper.ToRequest(GetItemById(id)!);  //continuar aqui <<           
+            return _repo.DeleteItem(item);
         }
 
         public ItemResponse? GetItemById(int id)
@@ -58,18 +64,11 @@ namespace Services
         public List<ItemResponse>? GetItemsByAnyField(string search)
         {
             List<ItemResponse>? itemsList = null;
-            foreach (var item in _repo.ListItems())
-            {
-                if (item.Id.ToString().Contains(search) ||                     
-                    item.Name.Contains(search) ||
-                    item.Category.Contains(search) ||
-                    item.Variant.Contains(search) ||
-                    item.Size.Contains(search))
-                {
-                    itemsList!.Add(ItemMapper.ToResponse(item));
-                }
-            }
-
+            var resultList = itemsList?.FindAll(i => i.Id.ToString() == search ||
+                                                i.Name == search ||
+                                                i.Variant == search ||
+                                                i.Category == search ||
+                                                i.Size == search);
             return itemsList;
         }
 
@@ -78,7 +77,7 @@ namespace Services
             List<ItemResponse>? itemsList = null;
             foreach (var item in _repo.ListItems())
             {
-                if (item.Category.Contains(category))                   
+                if (item.Category.Contains(category))
                 {
                     itemsList!.Add(ItemMapper.ToResponse(item));
                 }
@@ -101,14 +100,27 @@ namespace Services
             return itemsList;
         }
 
-        public List<ItemResponse> ListItems()
+        public List<ItemResponse>? ListItems()
         {
-            throw new System.NotImplementedException();
+            List<ItemResponse>? itemsList = null;
+            foreach (var item in _repo.ListItems())
+            {
+                itemsList!.Add(ItemMapper.ToResponse(item));
+            }
+
+            return itemsList;
         }
 
         public ItemResponse UpdateItem(BaseItemRequest updatedItem)
         {
-            throw new System.NotImplementedException();
+            var errors = _validator.Validate(updatedItem);
+
+            if (errors.Any())
+                throw new BadRequestException(errors);
+
+            var item = ItemMapper.ToEntity(updatedItem);
+            var mappedItem = _repo.UpdateItem(item);
+            return ItemMapper.ToResponse(mappedItem);
         }
     }
 }

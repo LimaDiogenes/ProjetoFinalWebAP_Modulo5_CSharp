@@ -7,20 +7,18 @@ using System.Text.Json;
 using System.Collections.Generic;
 using Requests;
 using Mappers;
+using System.Linq;
 
 namespace MockDB
 {
 
     public interface IItemRepo
     {
-        List<Item> ListItems();
-        Item? GetById(int id);
-        Item? FindByName(string name);
-        Item? FindByCategory(string cat);
-        Item? FindByAnyField(string search);
-        Item CreateItem(Item item);
-        Item UpdateItem(Item item);
-        bool DeleteItem(ItemResponse item);
+        List<ItemResponse>? ListItems();
+        ItemResponse? GetById(int id);
+        ItemResponse CreateItem(BaseItemRequest item);
+        ItemResponse? UpdateItem(BaseItemRequest item, int id);
+        bool DeleteItem(BaseItemRequest item);
     }
 
     internal class ItemsRepo : IItemRepo
@@ -30,21 +28,27 @@ namespace MockDB
 
         static ItemsRepo()
         {
-            ItemsList = JsonIO.ReadJson<Item>(JsonPath);
+            var readList = JsonIO.ReadJson<Item>(JsonPath);
+            foreach (var item in readList)
+            {
+                ItemMapper.ToResponse(item);
+            }
         }
 
-        public Item CreateItem(Item item)
+        public ItemResponse CreateItem(BaseItemRequest item)
         {
-            ItemsList.Add(item);
+            var newItem = ItemMapper.ToEntity(item);
+            ItemsList!.Add(newItem);
             JsonIO.WriteJson(JsonPath, ItemsList);
-            return item;
+            return ItemMapper.ToResponse(newItem);
         }
 
-        public bool DeleteItem(ItemResponse itemResponse)
+        public bool DeleteItem(BaseItemRequest item)
         {
-            var item = GetById(itemResponse.Id);
-            
-            bool valid = ItemsList.Remove(item!);
+            var responseToDelete = GetById(item.Id);
+            var itemToDelete = ItemsList.FirstOrDefault(i => i.Id == item.Id);
+
+            bool valid = ItemsList.Remove(itemToDelete!);
             if (valid)
             {
                 JsonIO.WriteJson(JsonPath, ItemsList);
@@ -53,34 +57,36 @@ namespace MockDB
             return false;
         }
 
-        public List<Item> ListItems()
+        public ItemResponse? GetById(int id)
         {
-            return ItemsList;
+            var response = ItemsList.FirstOrDefault(i => i.Id == id);
+            return response != null ? ItemMapper.ToResponse(response) : null;
         }
 
-        public Item? FindByAnyField(string search)
+        public List<ItemResponse>? ListItems()
         {
-            throw new NotImplementedException();
+            List<ItemResponse>? respList = null;
+            foreach (var item in ItemsList)
+            {
+                respList!.Add(ItemMapper.ToResponse(item));
+            }
+
+            return respList != null ? respList : null;
         }
 
-        public Item? FindByCategory(string cat)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Item? FindByName(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Item? GetById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Item UpdateItem(Item item)
-        {
-            throw new NotImplementedException();
+        public ItemResponse? UpdateItem(BaseItemRequest item, int id)
+        {            
+            var itemToUpdate = ItemsList.FirstOrDefault(i => i.Id == id);
+            if (itemToUpdate != null)
+            {
+                ItemsList.Remove(itemToUpdate);
+                var newItem = ItemMapper.ToEntity(item);
+                newItem.Id = id;
+                ItemsList.Add(newItem);
+                JsonIO.WriteJson(JsonPath, ItemsList);
+                return ItemMapper.ToResponse(newItem);
+            }
+            return null;
         }
     }
 }

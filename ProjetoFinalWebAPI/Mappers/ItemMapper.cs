@@ -25,6 +25,15 @@ namespace Mappers
             price: item.Price
         );
 
+        public static Item ToEntity(ItemResponse item) => new Item(
+            id: item.Id!,
+            name: item.Name!,
+            category: item.Category!,
+            variant: item.Variant!,
+            size: item.Size!,
+            price: item.Price
+        );
+
         public static Item ToEntity(ToItemResponse item) => new Item(
             name: item.Name!,
             category: item.Category!,
