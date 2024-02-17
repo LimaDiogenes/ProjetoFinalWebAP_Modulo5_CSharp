@@ -89,7 +89,9 @@ namespace FinalProj
             builder.Services.AddSingleton<IJwtService, JwtService>();
             builder.Services.AddSingleton<IAuthService, AuthService>();
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IItemService, ItemService>();
             builder.Services.AddScoped<IValidator<BaseUserRequest>, UserValidator>();
+            builder.Services.AddScoped<IValidator<BaseItemRequest>, ItemValidator>();
             builder.Services.AddSingleton<IValidator<string>, EmailValidator>();
                         
             

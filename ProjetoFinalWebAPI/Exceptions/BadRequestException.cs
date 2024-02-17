@@ -16,5 +16,13 @@ public class BadRequestException : Exception, ICustomException
         Errors = errors;
     }
 
+    public BadRequestException(string message) : base(message)
+    {
+        Errors = new List<ErrorMessageResponse>
+        {
+            new ErrorMessageResponse { Message = message }
+        };
+    }
+
     public string GetResponse() => JsonSerializer.Serialize(Errors);
 }

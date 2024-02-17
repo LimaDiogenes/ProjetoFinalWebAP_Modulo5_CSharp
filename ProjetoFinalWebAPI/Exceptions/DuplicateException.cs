@@ -2,18 +2,16 @@
 using System;
 using System.Text.Json;
 
-
-
 namespace Exceptions
 {
-    public class AdminOpsException : Exception, ICustomException
+    public class DuplicateException : Exception, ICustomException
     {
-        public AdminOpsException(string message) : base(message)
+        public DuplicateException(string message) : base(message)
         {
         }
-        public int StatusCode { get => 503; }
-
+        public int StatusCode { get => 409; }
         public string GetResponse() => JsonSerializer.Serialize(new ErrorResponse(base.Message));
     }
-
 }
+
+
