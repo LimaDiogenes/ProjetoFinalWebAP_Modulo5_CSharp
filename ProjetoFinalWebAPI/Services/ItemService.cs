@@ -89,7 +89,7 @@ namespace Services
             var repoList = _repo.ListItems();
             if (!repoList.IsNullOrEmpty())
             {
-                itemsList = repoList!.Where(item => item.Name == name).ToList();
+                itemsList = repoList!.Where(item => item.Name.Contains(name)).ToList();
             }
 
             return itemsList;

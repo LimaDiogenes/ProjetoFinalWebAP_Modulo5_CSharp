@@ -1,7 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Requests;
 using Services;
+using System.Collections.Generic;
+using System.Linq;
+using System.Globalization;
 
 namespace Controllers
 {
@@ -15,11 +19,77 @@ namespace Controllers
             itemService = service;
         }
 
-        [HttpGet("ListAllItems")]
-        public IActionResult Get()
+        [HttpGet]
+        public ActionResult Get(string? searchAll,
+                                string? searchCategory,
+                                string? searchName)
         {
-            return Ok(itemService.ListItems());
+            var itemsList = itemService.ListItems()!.OrderBy(i => i.Name);
+            List<List<ItemResponse>> itemsResponse = new();
+
+            string? _searchAll = searchAll!;
+            string? _searchCategory = searchCategory!;
+            string? _searchName = searchName!;
+
+            TextInfo myTI = CultureInfo.InvariantCulture.TextInfo;
+                        
+            if (searchAll != null) 
+                _searchAll = myTI.ToTitleCase(searchAll!).Trim();
+            if (searchCategory != null)
+                _searchCategory = myTI.ToTitleCase(searchCategory!).Trim();
+            if (searchName != null)
+                _searchName = myTI.ToTitleCase(searchName!).Trim();
+
+            if (!_searchAll.IsNullOrEmpty())
+            {
+                itemsResponse.Add(itemService.GetItemsByAnyField(_searchAll!)!);
+            }
+
+            if (!_searchCategory.IsNullOrEmpty())
+            {
+                if (itemsResponse.Any())
+                {
+                    foreach (var list in itemsResponse)
+                    {
+                        var newList = list.Where(item => item.Category.Contains(_searchCategory!)).ToList();
+                        list.Clear();
+                        list.AddRange(newList);
+                    }
+                }
+                else
+                    itemsResponse.Add(itemService.GetItemsByCategory(_searchCategory!)!);
+            }
+
+            if (!_searchName.IsNullOrEmpty())
+            {
+                if (itemsResponse.Any())
+                {
+                    foreach (var list in itemsResponse)
+                    {
+                        var newList = list.Where(item => item.Name.Contains(_searchName!)).ToList();
+                        list.Clear();
+                        list.AddRange(newList);
+                    }
+                }
+                else
+                    itemsResponse.Add(itemService.GetItemsByName(_searchName!)!);
+            }
+
+            if (itemsResponse.Any())
+                return Ok(itemsResponse.Distinct());
+
+            return Ok(itemsList.IsNullOrEmpty() ? NotFound("No items in database") : new
+            {
+                categories = itemsList.Select(item => item.Category).Distinct(),
+                items = itemsList
+            });
         }
+
+        //[HttpGet("ListAllItems")]
+        //public IActionResult Get()
+        //{
+        //    return Ok(itemService.ListItems());
+        //}
 
         [Authorize(Roles = "Admin")]
         [HttpPost("CreateItem")]
@@ -43,11 +113,11 @@ namespace Controllers
         [Authorize(Roles = "Admin")]
         [HttpPut("UpdateItem/{id}")]
         public IActionResult Put(int id, [FromForm] BaseItemRequest item)
-        {            
-            var itemToUpdate = itemService.GetItemById(id);     
-            if (itemToUpdate != null) 
-            { 
-                item.Id = id; 
+        {
+            var itemToUpdate = itemService.GetItemById(id);
+            if (itemToUpdate != null)
+            {
+                item.Id = id;
                 var updatedItem = itemService.UpdateItem(item);
                 return Ok($"Item updated succesfully: \n\n " +
                           $"Name: {updatedItem!.Name} \n" +
@@ -60,7 +130,5 @@ namespace Controllers
             return NotFound("Item not found in database");
 
         }
-
-
     }
 }
