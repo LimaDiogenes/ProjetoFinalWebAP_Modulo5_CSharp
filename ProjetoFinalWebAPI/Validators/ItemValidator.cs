@@ -1,8 +1,12 @@
 ﻿using Requests;
 using Responses;
+using System;
 using System.Collections.Generic;
 using FinalProj;
 using System.Text.RegularExpressions;
+using MockDB;
+using System.Linq;
+
 
 namespace Validators;
 
@@ -52,6 +56,20 @@ public class ItemValidator : IValidator<BaseItemRequest>
             {
                 Field = "Price",
                 Message = "Field must be a positive numeric value"
+            });
+
+        if (item.EanCode!.Length != 13)
+            errors.Add(new ErrorMessageResponse
+            {
+                Field = "EanCode",
+                Message = "Field must have exactly 13 digits"
+            });
+
+        if (!item.EanCode.All(char.IsDigit))
+            errors.Add(new ErrorMessageResponse
+            {
+                Field = "EanCode",
+                Message = "Field must contain only numbers"
             });
 
 

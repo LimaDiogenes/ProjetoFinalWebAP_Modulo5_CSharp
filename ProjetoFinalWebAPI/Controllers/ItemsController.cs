@@ -4,8 +4,8 @@ using Microsoft.IdentityModel.Tokens;
 using Requests;
 using Services;
 using System.Collections.Generic;
-using System.Linq;
 using System.Globalization;
+using System.Linq;
 
 namespace Controllers
 {
@@ -20,25 +20,37 @@ namespace Controllers
         }
 
         [HttpGet]
-        public ActionResult Get(string? searchAll,
-                                string? searchCategory,
-                                string? searchName)
+        public IActionResult Get(string? searchAll,
+                                 string? searchCategory,
+                                 string? searchName)
         {
-            var itemsList = itemService.ListItems()!.OrderBy(i => i.Name);
+            List<ItemResponse>? itemsList = itemService.ListItems();
+            if (itemsList != null)
+                itemsList = itemsList.OrderBy(i => i.Name).ToList();
             List<List<ItemResponse>> itemsResponse = new();
 
-            string? _searchAll = searchAll!;
-            string? _searchCategory = searchCategory!;
-            string? _searchName = searchName!;
+            string? _searchAll = searchAll;
+            string? _searchCategory = searchCategory;
+            string? _searchName = searchName;
 
             TextInfo myTI = CultureInfo.InvariantCulture.TextInfo;
-                        
-            if (searchAll != null) 
+
+            if (searchAll != null)
                 _searchAll = myTI.ToTitleCase(searchAll!).Trim();
             if (searchCategory != null)
                 _searchCategory = myTI.ToTitleCase(searchCategory!).Trim();
             if (searchName != null)
                 _searchName = myTI.ToTitleCase(searchName!).Trim();
+
+            if (_searchAll.IsNullOrEmpty() && _searchCategory.IsNullOrEmpty() && _searchName.IsNullOrEmpty())
+            {
+                return Ok(itemsList.IsNullOrEmpty() ? NotFound("No items in database") : new
+                {
+                    message = "List of all items:",
+                    categories = itemsList!.Select(item => item.Category).Distinct(),
+                    items = itemsList
+                });
+            }
 
             if (!_searchAll.IsNullOrEmpty())
             {
@@ -75,21 +87,19 @@ namespace Controllers
                     itemsResponse.Add(itemService.GetItemsByName(_searchName!)!);
             }
 
-            if (itemsResponse.Any())
+            // return when one or more items are found by search
+            if (itemsResponse.All(innerList => innerList.Any()))
                 return Ok(itemsResponse.Distinct());
 
-            return Ok(itemsList.IsNullOrEmpty() ? NotFound("No items in database") : new
+            // return when no match was found by search
+            return Ok(new
             {
-                categories = itemsList.Select(item => item.Category).Distinct(),
+                message = "No items found by search",
+                list = "List of all items:",
+                categories = itemsList!.Select(item => item.Category).Distinct(),
                 items = itemsList
             });
         }
-
-        //[HttpGet("ListAllItems")]
-        //public IActionResult Get()
-        //{
-        //    return Ok(itemService.ListItems());
-        //}
 
         [Authorize(Roles = "Admin")]
         [HttpPost("CreateItem")]

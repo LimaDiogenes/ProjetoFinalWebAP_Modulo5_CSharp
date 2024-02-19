@@ -1,1 +1,112 @@
-[{"Id":1,"Name":"Official NFL Game Ball","Category":"Footballs","Variant":"Duke","Size":"Regulation","Price":99.99},{"Id":2,"Name":"Replica NFL Jersey","Category":"Apparel","Variant":"Raiders Home - #98","Size":"Medium","Price":59.99},{"Id":3,"Name":"Football Helmet","Category":"Equipment","Variant":"Bucket - 1 Bar Facemask","Size":"Large","Price":129.99},{"Id":4,"Name":"Shoulder Pads","Category":"Equipment","Variant":"Adult - Skill","Size":"Medium","Price":79.99},{"Id":5,"Name":"Cleats","Category":"Footwear","Variant":"Freak 2024","Size":"10M","Price":54.99},{"Id":6,"Name":"Mouthguard","Category":"Protective Gear","Variant":"Adult - Blue","Size":"One Size Fits All","Price":9.99},{"Id":7,"Name":"Tailgating Chair","Category":"Fan Gear","Variant":"Folding","Size":"Standard","Price":29.99},{"Id":8,"Name":"Team Pennant","Category":"Fan Gear","Variant":"Raiders - Large","Size":"3\u0027 x 5\u0027","Price":14.99},{"Id":9,"Name":"Foam Finger","Category":"Fan Gear","Variant":"Raiders - Silver","Size":"One Size Fits All","Price":5.99},{"Id":10,"Name":"Football Snack Helmet","Category":"Novelty Items","Variant":"Raiders - Mini","Size":"One Size Fits All","Price":19.99},{"Id":11,"Name":"NFL Team Logo Mug","Category":"Drinkware","Variant":"Raiders","Size":"7 oz","Price":9.99}]
+[
+    {
+        "Id": 1,
+        "Name": "Official NFL Game Ball",
+        "Category": "Footballs",
+        "Variant": "Duke",
+        "Size": "Regulation",
+        "Price": 99.99,
+        "Quantity": 42,
+        "EanCode": "1234567890123"
+    },
+    {
+        "Id": 2,
+        "Name": "Replica NFL Jersey",
+        "Category": "Apparel",
+        "Variant": "Raiders Home - #98",
+        "Size": "Medium",
+        "Price": 59.99,
+        "Quantity": 17,
+        "EanCode": "2345678901234"
+    },
+    {
+        "Id": 3,
+        "Name": "Football Helmet",
+        "Category": "Equipment",
+        "Variant": "Bucket - 1 Bar Facemask",
+        "Size": "Large",
+        "Price": 129.99,
+        "Quantity": 88,
+        "EanCode": "3456789012345"
+    },
+    {
+        "Id": 4,
+        "Name": "Shoulder Pads",
+        "Category": "Equipment",
+        "Variant": "Adult - Skill",
+        "Size": "Medium",
+        "Price": 79.99,
+        "Quantity": 5,
+        "EanCode": "4567890123456"
+    },
+    {
+        "Id": 5,
+        "Name": "Cleats",
+        "Category": "Footwear",
+        "Variant": "Freak 2024",
+        "Size": "10M",
+        "Price": 54.99,
+        "Quantity": 63,
+        "EanCode": "5678901234567"
+    },
+    {
+        "Id": 6,
+        "Name": "Mouthguard",
+        "Category": "Protective Gear",
+        "Variant": "Adult - Blue",
+        "Size": "One Size Fits All",
+        "Price": 9.99,
+        "Quantity": 29,
+        "EanCode": "6789012345678"
+    },
+    {
+        "Id": 7,
+        "Name": "Tailgating Chair",
+        "Category": "Fan Gear",
+        "Variant": "Folding",
+        "Size": "Standard",
+        "Price": 29.99,
+        "Quantity": 77,
+        "EanCode": "7890123456789"
+    },
+    {
+        "Id": 8,
+        "Name": "Team Pennant",
+        "Category": "Fan Gear",
+        "Variant": "Raiders - Large",
+        "Size": "3' x 5'",
+        "Price": 14.99,
+        "Quantity": 91,
+        "EanCode": "8901234567890"
+    },
+    {
+        "Id": 9,
+        "Name": "Foam Finger",
+        "Category": "Fan Gear",
+        "Variant": "Raiders - Silver",
+        "Size": "One Size Fits All",
+        "Price": 5.99,
+        "Quantity": 3,
+        "EanCode": "9012345678901"
+    },
+    {
+        "Id": 10,
+        "Name": "Football Snack Helmet",
+        "Category": "Novelty Items",
+        "Variant": "Raiders - Mini",
+        "Size": "One Size Fits All",
+        "Price": 19.99,
+        "Quantity": 50,
+        "EanCode": "0123456789012"
+    },
+    {
+        "Id": 11,
+        "Name": "NFL Team Logo Mug",
+        "Category": "Drinkware",
+        "Variant": "Raiders",
+        "Size": "7 oz",
+        "Price": 9.99,
+        "Quantity": 12,
+        "EanCode": "0987654321098"
+    }
+]

@@ -8,4 +8,6 @@ public class ItemResponse
     public required string Variant { get; set; }
     public required string Size { get; set; }
     public required double Price { get; set; }
+    public int Quantity { get; set; }
+    public required string EanCode { get; set; }
 }

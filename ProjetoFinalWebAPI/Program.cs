@@ -85,7 +85,7 @@ namespace FinalProj
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddSingleton<IUserRepo, UsersRepo>();
-            builder.Services.AddSingleton<IItemRepo, ItemsRepo>();
+            builder.Services.AddScoped<IItemRepo, ItemsRepo>();
             builder.Services.AddSingleton<PasswordHashOptions>();
             builder.Services.AddSingleton<IHashingService, HashingService>();
             builder.Services.AddSingleton<IJwtService, JwtService>();

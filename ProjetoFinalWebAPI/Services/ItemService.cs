@@ -106,12 +106,7 @@ namespace Services
         }
 
         public ItemResponse? UpdateItem(BaseItemRequest updatedItem)
-        {
-            /*var errors = _validator.Validate(updatedItem);
-
-            if (errors.Any())
-                throw new BadRequestException(errors);*/
-            
+        {            
             var mappedItem = _repo.UpdateItem(updatedItem, updatedItem.Id);
             return mappedItem;
         }

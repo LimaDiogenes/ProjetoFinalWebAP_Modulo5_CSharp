@@ -1,5 +1,6 @@
 ﻿using Entities;
 using Requests;
+using System.Text;
 
 
 
@@ -15,6 +16,8 @@ namespace Mappers
             Variant = item.Variant,
             Size = item.Size,
             Price = item.Price,
+            Quantity = item.Quantity,
+            EanCode = item.EanCode,
         };
 
         public static Item ToEntity(BaseItemRequest item) => new Item(
@@ -22,7 +25,9 @@ namespace Mappers
             category: item.Category!,
             variant: item.Variant!,
             size: item.Size!,
-            price: item.Price
+            price: item.Price,
+            quantity: item.Quantity,
+            eanCode: item.EanCode!
         );
 
         public static Item ToEntity(ItemResponse item) => new Item(
@@ -31,7 +36,9 @@ namespace Mappers
             category: item.Category!,
             variant: item.Variant!,
             size: item.Size!,
-            price: item.Price
+            price: item.Price,
+            quantity: item.Quantity,
+            eanCode: item.EanCode
         );
 
         public static Item ToEntity(ToItemResponse item) => new Item(
@@ -39,7 +46,9 @@ namespace Mappers
             category: item.Category!,
             variant: item.Variant!,
             size: item.Size!,
-            price: item.Price
+            price: item.Price,
+            quantity: item.Quantity,
+            eanCode: item.EanCode!
         );
     }
 }
