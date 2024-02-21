@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Requests;
+using Services;
+using System;
 
 namespace Responses;
 
@@ -11,4 +13,6 @@ public class JwtResponse
 public class AuthResponse
 {
     public JwtResponse? Token { get; set; }
+    public UserResponse? User { get; set; }
+    public CartResponse? Cart { get; set; }
 }

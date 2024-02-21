@@ -2,6 +2,7 @@
 using Requests;
 using Responses;
 using MockDB;
+using Mappers;
 
 namespace Services;
 
@@ -42,6 +43,8 @@ public class AuthService : IAuthService
         return new AuthResponse
         {
             Token = jwt,
+            User = UserMapper.ToResponse(user),
+            Cart = CartMapper.ToResponse(new CartService(UserMapper.ToResponse(user)));
         };
     }
 }
