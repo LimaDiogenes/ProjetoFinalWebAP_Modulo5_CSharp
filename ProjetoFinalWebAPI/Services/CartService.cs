@@ -35,12 +35,14 @@ namespace Services
         /// <returns>The updated list of items in the cart.</returns>
         List<ItemResponse>? UpdateItemQuantity(BaseItemRequest request, int newQuantity);
     }
+
     public class CartService : ICartService
     {
-        public Cart UserCart { get; set; }
+        public CartRepo UserCart { get; set; }
         public CartService(UserResponse user)
         {
-            UserCart = new CartRepo(user.Id);
+            var cart = new Cart(user.Id);
+            UserCart = new CartRepo(cart);
         }
 
         public List<ItemResponse>? GetCartList()

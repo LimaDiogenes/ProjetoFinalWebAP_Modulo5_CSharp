@@ -6,4 +6,5 @@ public class UserResponse
     public string? Name { get; set; }
     public string? Email { get; set; }
     public bool Admin { get; set; }
+    public CartResponse? UserCart{ get; set; }
 }

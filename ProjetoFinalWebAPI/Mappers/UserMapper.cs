@@ -11,6 +11,7 @@ public static class UserMapper
         Name = user.Name,
         Email = user.Email,
         Admin = user.Admin,
+        UserCart = CartMapper.ToResponse(user._Cart)
     };
 
     public static User ToEntity(BaseUserRequest user) => new User(

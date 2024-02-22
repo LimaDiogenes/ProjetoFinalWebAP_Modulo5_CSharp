@@ -12,7 +12,6 @@ using System;
 
 namespace MockDB
 {
-
     public interface ICartRepo
     {
         /// <summary>
@@ -46,11 +45,11 @@ namespace MockDB
 
     public class CartRepo : ICartRepo
     {
-        public int CartId { get; set; }
+        public Cart _Cart { get; set; }
         public List<ItemResponse> ItemsList { get; set; } = new();
         public string JsonPath { get; set; }
 
-        public CartRepo(int userId)
+        public CartRepo(Cart cart)
         {
             var readList = ReadFromDB();
             if (!readList.IsNullOrEmpty())
@@ -60,8 +59,8 @@ namespace MockDB
                     ItemsList.Add(item);
                 }
             }
-            CartId = userId;
-            JsonPath = $"{Directory.GetCurrentDirectory()}\\MockDB\\Assets\\Carts\\cart{CartId}.json";
+            _Cart = cart;
+            JsonPath = $"{Directory.GetCurrentDirectory()}\\MockDB\\Assets\\Carts\\cart{_Cart.Id}.json";
         }
 
         #region privateMethods

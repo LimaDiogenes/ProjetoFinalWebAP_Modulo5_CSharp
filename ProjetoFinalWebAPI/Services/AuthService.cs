@@ -44,7 +44,6 @@ public class AuthService : IAuthService
         {
             Token = jwt,
             User = UserMapper.ToResponse(user),
-            Cart = CartMapper.ToResponse(new CartService(UserMapper.ToResponse(user)));
         };
     }
 }

@@ -6,10 +6,10 @@ namespace Mappers
 {
     public class CartMapper
     {
-        public static CartResponse ToResponse(CartRepo repo) => new CartResponse
+        public static CartResponse ToResponse(Cart cart) => new CartResponse
         { 
-            Id = repo.CartId,
-            ItemsList = repo.ListCartItems(),
+            Id = cart.Id,
+            ItemsList = cart.CartItems,
         };
        
     }
