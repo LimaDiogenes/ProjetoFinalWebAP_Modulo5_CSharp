@@ -5,6 +5,8 @@ using MockDB;
 using Mappers;
 using System.Collections.Generic;
 using System.Linq;
+using Entities;
+using System.Security.Claims;
 
 namespace Services;
 
@@ -22,6 +24,7 @@ public class UserService : IUserService
     private readonly IValidator<BaseUserRequest> _validator;
     private readonly IUserRepo _repository;
     private readonly IHashingService _hashingService;
+    
 
     public UserService(IUserRepo repository, IValidator<BaseUserRequest> validator,
         IHashingService hashingService)

@@ -1,7 +1,13 @@
 ﻿using MockDB;
 using Requests;
 using System.Collections.Generic;
-using Entities;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using Services;
+using Mappers;
+
 
 namespace Services
 {
@@ -11,14 +17,14 @@ namespace Services
         /// Retrieves the list of items in the user's cart.
         /// </summary>
         /// <returns>The list of items in the cart.</returns>
-        List<ItemResponse>? GetCartList();
+        List<ItemResponse>? GetCart();
 
         /// <summary>
         /// Adds an item to the user's cart.
         /// </summary>
         /// <param name="request">The request containing details of the item to add.</param>
         /// <returns>The updated list of items in the cart.</returns>
-        List<ItemResponse>? AddToCart(BaseItemRequest request);
+        List<ItemResponse>? AddToCart(ItemResponse request);
 
         /// <summary>
         /// Removes an item from the user's cart.
@@ -40,19 +46,18 @@ namespace Services
     {
         public CartRepo UserCart { get; set; }
         public CartService(UserResponse user)
-        {
-            var cart = new Cart(user.Id);
-            UserCart = new CartRepo(cart);
+        {            
+            UserCart = new CartRepo(user.Id);            
         }
 
-        public List<ItemResponse>? GetCartList()
+        public List<ItemResponse>? GetCart()
         {
-            return UserCart.ListCartItems();
+            return UserCart.GetCart();
         }
 
-        public List<ItemResponse>? AddToCart(BaseItemRequest request)
+        public List<ItemResponse>? AddToCart(ItemResponse item)
         {
-            return UserCart.AddItemToCart(request);
+            return UserCart.AddItemToCart(item);
         }
 
         public List<ItemResponse>? RemoveFromCart(BaseItemRequest request)
@@ -60,9 +65,19 @@ namespace Services
             return UserCart.RemoveItem(request);
         }
 
+        public List<ItemResponse>? RemoveFromCart(ItemResponse response)
+        {
+            return UserCart.RemoveItem(response);
+        }
+
         public List<ItemResponse>? UpdateItemQuantity(BaseItemRequest request, int newQuantity)
         {
             return UserCart.UpdateItemQuantity(request.Id, newQuantity);
+        }
+
+        public List<ItemResponse>? UpdateItemQuantity(int itemId, int newQuantity)
+        {
+            return UserCart.UpdateItemQuantity(itemId, newQuantity);
         }
     }
 }

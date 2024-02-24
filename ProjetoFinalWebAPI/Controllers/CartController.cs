@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Services;
-using Mappers;
+using Microsoft.IdentityModel.Tokens;
 using Requests;
+using Services;
 using System.Security.Claims;
+using Mappers;
 
 
 namespace Controllers
@@ -13,21 +14,56 @@ namespace Controllers
     [Authorize]
     public class CartController : ControllerBase
     {
-        public readonly ICartService cartService;
-        public readonly IUserService userService;
-        public readonly UserResponse user;
+        // nao consegui resgatar info do usuario do token no construtor ( metodo GetUserFromJwt() ), por isso está sendo inicializado um novo CartService em cada metodo
 
-        public CartController(IUserService uService)
+        public readonly IUserService userService;
+        private readonly IItemService itemService;
+        public CartController(IUserService userService, IItemService itemService)
         {
-            userService = uService;
-            var userID = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            user = userService.GetUserById(int.Parse(userID!))!;
-            cartService = new CartService(user);
+            this.userService = userService;
+            this.itemService = itemService;
         }
+
         [HttpGet]
-        public IActionResult Get() 
+        public IActionResult Get()
         {
-            return Ok(cartService.GetCartList());
+            var user = GetUserFromJwt();
+            var cartList = new CartService(user).GetCart();
+
+            return Ok(!cartList.IsNullOrEmpty() ? cartList : new { message = "Cart is empty", list = cartList });
+        }
+
+        [HttpPut]
+        public IActionResult Put([FromForm] int itemId, [FromForm] int newQuantity)
+        {
+            var user = GetUserFromJwt();
+            var cartService = new CartService(user);
+            var updatedList = cartService.UpdateItemQuantity(itemId, newQuantity);
+
+            return Ok( new { updated_list = updatedList } );
+        }
+        [HttpDelete]
+        public IActionResult Delete(int itemId)
+        {
+            var user = GetUserFromJwt();
+            var cartService = new CartService(user);
+            var item = itemService.GetItemById(itemId);
+            var updatedList = cartService.RemoveFromCart(item!);
+            return Ok(!updatedList.IsNullOrEmpty() ? updatedList : new { message = "Cart is empty", list = updatedList});
+        }
+        private UserResponse GetUserFromJwt()
+        {
+            int userID;
+            try
+            {
+                userID = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            }
+            catch (System.Exception)
+            {
+                throw new Exceptions.NotFoundException("Invalid token information - User not found");
+            }
+
+            return userService.GetUserById(userID)!;
         }
     }
 }

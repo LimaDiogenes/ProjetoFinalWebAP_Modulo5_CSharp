@@ -1,18 +1,17 @@
 
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using Middlewares;
 using MockDB;
 using Options;
 using Requests;
 using Services;
-using Validators;
-using Middlewares;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Microsoft.Extensions.Options;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Validators;
 
 
 
@@ -22,7 +21,7 @@ namespace FinalProj
     {
         public static void Main(string[] args)
         {
-            
+
 
             var builder = WebApplication.CreateBuilder(args);
 
@@ -81,7 +80,7 @@ namespace FinalProj
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            //builder.Services.AddSwaggerGen();
 
             builder.Services.AddSingleton<IUserRepo, UsersRepo>();
             builder.Services.AddScoped<IItemRepo, ItemsRepo>();
@@ -94,12 +93,12 @@ namespace FinalProj
             builder.Services.AddScoped<IValidator<BaseUserRequest>, UserValidator>();
             builder.Services.AddScoped<IValidator<BaseItemRequest>, ItemValidator>();
             builder.Services.AddSingleton<IValidator<string>, EmailValidator>();
-                        
-            
+
+
 
             var app = builder.Build();
 
-            
+
             // Configure the HTTP request pipeline.
             //if (app.Environment.IsDevelopment())
             //{

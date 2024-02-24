@@ -6,6 +6,7 @@ using Services;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Security.Claims;
 
 namespace Controllers
 {
@@ -14,9 +15,11 @@ namespace Controllers
     public class ItemsController : ControllerBase
     {
         private readonly IItemService itemService;
-        public ItemsController(IItemService service)
+        private readonly IUserService userService;
+        public ItemsController(IItemService service, IUserService userService)
         {
             itemService = service;
+            this.userService = userService;
         }
 
         [HttpGet]
@@ -101,6 +104,18 @@ namespace Controllers
             });
         }
 
+        [HttpPost]
+        [Authorize]
+        public IActionResult Post([FromForm] int itemId)
+        {
+            var user = GetUserFromJwt();
+            var cartService = new CartService(user);
+            var item = itemService.GetItemById(itemId);
+            var resultList = cartService.AddToCart(item);
+
+            return Ok(resultList);
+        }
+
         [Authorize(Roles = "Admin")]
         [HttpPost("CreateItem")]
         public IActionResult Post([FromForm] BaseItemRequest item)
@@ -138,7 +153,21 @@ namespace Controllers
             };
 
             return NotFound("Item not found in database");
+        }
 
+        private UserResponse GetUserFromJwt()
+        {            
+            int userID;
+            try
+            {
+                userID = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            }
+            catch (System.Exception)
+            {
+                throw new Exceptions.NotFoundException("Invalid token information - User not found");
+            }
+
+            return userService.GetUserById(userID)!;
         }
     }
 }

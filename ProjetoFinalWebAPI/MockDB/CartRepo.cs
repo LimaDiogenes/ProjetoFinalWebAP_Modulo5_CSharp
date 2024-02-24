@@ -18,13 +18,13 @@ namespace MockDB
         /// Lists all items in the cart.
         /// </summary>
         /// <returns>The list of items in the cart.</returns>
-        List<ItemResponse>? ListCartItems();
+        List<ItemResponse>? GetCart();
         /// <summary>
         /// Adds an item to the cart and returns the updated list of items.
         /// </summary>
         /// <param name="item">The item to add to the cart.</param>
         /// <returns>The updated list of items in the cart.</returns>
-        List<ItemResponse>? AddItemToCart(BaseItemRequest item);
+        List<ItemResponse>? AddItemToCart(ItemResponse item);
         /// <summary>
         /// Updates the quantity of an item in the cart and returns the updated list of items.
         /// </summary>
@@ -49,7 +49,7 @@ namespace MockDB
         public List<ItemResponse> ItemsList { get; set; } = new();
         public string JsonPath { get; set; }
 
-        public CartRepo(Cart cart)
+        public CartRepo(int id)
         {
             var readList = ReadFromDB();
             if (!readList.IsNullOrEmpty())
@@ -59,8 +59,8 @@ namespace MockDB
                     ItemsList.Add(item);
                 }
             }
-            _Cart = cart;
-            JsonPath = $"{Directory.GetCurrentDirectory()}\\MockDB\\Assets\\Carts\\cart{_Cart.Id}.json";
+            _Cart = new Cart(id);
+            JsonPath = $"{Directory.GetCurrentDirectory()}\\MockDB\\Assets\\Carts\\cart{id}.json";
         }
 
         #region privateMethods
@@ -87,7 +87,7 @@ namespace MockDB
             return JsonIO.WriteJson(JsonPath, newList);
         }
         #endregion 
-        public List<ItemResponse>? AddItemToCart(BaseItemRequest item)
+        public List<ItemResponse>? AddItemToCart(ItemResponse item)
         {
             ReadFromDB();
             var newItem = ItemMapper.ToEntity(item);
@@ -97,10 +97,10 @@ namespace MockDB
             return ItemsList;
         }
 
-        public List<ItemResponse>? ListCartItems()
+        public List<ItemResponse>? GetCart()
         {
             ReadFromDB();
-            return ItemsList.IsNullOrEmpty() ? null : ItemsList;
+            return ItemsList;
         }
 
         public List<ItemResponse>? RemoveItem(BaseItemRequest item)
@@ -116,6 +116,21 @@ namespace MockDB
             ItemsList.Remove(itemToRemove);
             WriteToDb();
             return ItemsList;                
+        }
+
+        public List<ItemResponse>? RemoveItem(ItemResponse item)
+        {
+            ReadFromDB();
+            if (ItemsList.IsNullOrEmpty())
+                throw new InvalidOperationException("Cart is empty");
+
+            ItemResponse? itemToRemove = ItemsList.FirstOrDefault(i => i.Id == item.Id);
+            if (itemToRemove == null)
+                throw new BadRequestException("Item not found in cart");
+
+            ItemsList.Remove(itemToRemove);
+            WriteToDb();
+            return ItemsList;
         }
 
         public List<ItemResponse>? UpdateItemQuantity(int itemId, int newQuantity)

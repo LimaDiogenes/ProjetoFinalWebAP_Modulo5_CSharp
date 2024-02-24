@@ -10,7 +10,6 @@ namespace Mappers
         { 
             Id = cart.Id,
             ItemsList = cart.CartItems,
-        };
-       
+        };      
     }
 }

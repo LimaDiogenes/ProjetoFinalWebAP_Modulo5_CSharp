@@ -10,7 +10,7 @@ namespace Entities
         public bool Admin { get; set; } 
         public string Password { get; set; }
         public string Role { get; set; }
-        public Cart _Cart {  get; set; }
+        //public Cart UserCart {  get; set; }
 
         public User(string name, string email, bool admin, string password, int id = 0)
         {
@@ -20,7 +20,7 @@ namespace Entities
             Admin = admin;
             Password = password;
             Role = admin ? "Admin" : "NormalUser";
-            _Cart = new Cart(Id);            
+            //UserCart = new Cart(Id);            
         }
     }
 }
